@@ -9,6 +9,7 @@ from keras.layers import Dropout
 from keras.layers import Dense
 import splitfolders
 import matplotlib.pyplot as plt
+import tensorflow as tf
 
 splitfolders.ratio("Data", output="TestingData", seed=42, ratio=(.7, .3), group_prefix=None, move=False)
 
@@ -82,4 +83,7 @@ axes[1].legend(['Train', 'Validation'], loc='upper left')
 
 plt.show()
 
-emotion_model.save("venv/model.py")
+filename = "HDS.h5"
+tf.keras.models.save_model(emotion_model, filepath=filename)
+
+# emotion_model.save("venv/model.py")

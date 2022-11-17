@@ -1,11 +1,16 @@
 import operator
-import model.py
 
 import cv2  # for open cv library functions
 from cvzone.HandTrackingModule import HandDetector  # To detect the hand in the image
 import numpy as np  # For forming an image of same size
 import math
 import tensorflow as tf
+
+import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+model = tf.keras.models.load_model("HDS.h5")
 
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 detector = HandDetector(maxHands=1)
@@ -39,7 +44,7 @@ while True:
             imgTest = cv2.resize(imgWhite, (128, 128), interpolation=cv2.INTER_AREA)
             imgTest = cv2.cvtColor(imgTest, cv2.COLOR_RGB2GRAY)
             imgTest = tf.expand_dims(imgTest, axis=0)
-            prediction = model.emotion_model.predict(imgTest)
+            prediction = model.predict(imgTest)
             print(prediction)
 
         else:
@@ -52,7 +57,7 @@ while True:
             imgTest = cv2.resize(imgWhite, (128, 128), interpolation=cv2.INTER_AREA)
             imgTest = cv2.cvtColor(imgTest, cv2.COLOR_RGB2GRAY)
             imgTest = tf.expand_dims(imgTest, axis=0)
-            prediction = model.emotion_model.predict(imgTest)
+            prediction = model.predict(imgTest)
             print(prediction)
 
         max_value = np.argmax(prediction)
@@ -66,3 +71,5 @@ while True:
 
     cv2.imshow("Image", imgOutput)
     key = cv2.waitKey(1)
+
+
